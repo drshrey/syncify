@@ -1,7 +1,8 @@
 class Syncify(object):
-	def __init__(self, track_name, auth=None):
+	def __init__(self, track_name, service, auth=None):
 		self.track_name = track_name
 		self.found = False
+		self.service = service 
 
 	'''Return the track name of this node
 	'''
