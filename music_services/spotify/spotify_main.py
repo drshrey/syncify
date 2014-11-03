@@ -19,7 +19,8 @@ login_file = open('spotify_login.txt', 'w')
 login_file.write(user+'\n')
 login_file.write(password+'\n')
 
-#LOGGING IN 
+#LOGGING IN
+#session = spotify_func.login_correctly(user, password)
 logged_in_event = threading.Event()
 def connection_state_listener(session):
 	if session.connection.state is spotify.ConnectionState.LOGGED_IN:
@@ -29,14 +30,11 @@ session = spotify.Session()
 loop = spotify.EventLoop(session)
 loop.start()
 session.on(
-		spotify.SessionEvent.CONNECTION_STATE_UPDATED,			
-		connection_state_listener							
+		spotify.SessionEvent.CONNECTION_STATE_UPDATED,
+		connection_state_listener
 		)
-
 session.login('drshrey', 'Idaman2014')
 logged_in_event.wait()
-
-
 #ADD/SYNC 
 testSyncObj = syncify_object.Syncify("Why Georgia", "Room for Squares", "John Mayer", "8tracks")
 
@@ -47,3 +45,8 @@ if(valid == False):
 	add_valid = spotify_func.add_to_playlist(track, playlist)
 	print add_valid
 
+print "HOOKAY"
+valid = spotify_func.search(testSyncObj, session)
+
+if(valid == False):
+	print "You fucked up somehow"
