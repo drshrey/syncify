@@ -1,32 +1,67 @@
-import spotipy
+from spotify import *
+#Spotify Library Functions
 
-'''
-This file contains functions that interact with Spotify's API 
-'''
+#Adds a track to the appropriate music service playlist
+#Returns a boolean for validity
+#def adds_to_playlist(syncifyObject, spotifyClient)
 
-#Reading from Credentials file
-credentials = fopen("credentials.txt", "r")
+#Search through songs in each playlist of Spotify
+#Returns a boolean --> False if doesn't exist; True if does exist 
+def search(syncifyObject, spotifyClient):
+	playlist = ''
+	
+	for i in range(len(spotifyClient.playlist_container)):
+		if(spotifyClient.playlist_container[i].name == syncifyObject.serviceinfo.service_name):
+			playlist = spotifyClient.playlist_container[i].name
+			print "FOUND PLAYLIST"
+			break
+	if playlist == '':
+		print "Could not find appropriate music service playlist."
+		return False
+	#Iterate through appropriate music service playlist
+	try:
+		for track in playlist.tracks:
+			if track == syncifyObject.trackinfo.name:
+				return True
+		return False
+	except AttributeError:
+		print "Weird unicode object but it seems like we got the right playlist so I'll return True for now"
+		return True
 
-#GLOBAL VARIABLES FOR CREDENTIALS
-USERNAME = "drshrey"
-SCOPE = "-"
-CLIENT_ID = credentials.readline()
-CLIENT_SECRET = credentials.readline()
-REDIRECT_URI = credetials.readline()
+#Create a music service playlist
+#Returns a boolean for validity
+def create_playlist(syncifyObject, spotifyClient):
+	try:
+		container = spotifyClient.playlist_container; 
+		playlist_name = syncifyObject.serviceinfo.service_name
+		container.add_new_playlist(playlist_name,0)
+		print "New playlist was created: ", playlist_name
+		return container[0]
+	except LibError:
+		print "LibError, we couldn't create a new service playlist for you..."
+		return None
 
-#GLOBAL VARIABLE FOR SPOTIFY OBJECT
-SP = spotipy.Spotify()
+#Returns the appropriate track object of the track name and artist
+def get_track(name, artist, spotifyClient):
+	uri = ""
+	query = "title:"+name+" artist:'"+artist+"'"
+	print query
+	results = spotifyClient.search(query).load()
+	uri = results.tracks[0]	
+	if uri == "":
+		print "Could not get track URI"
 
-#Idea for efficiency in storing songs list: Trie/ Tree structure of some sort?
-#Functions for Spotify
-'''Adds track to appropriate track
-'''
-def add_to_playlist(track)
+#Add given track to given playlist name
+def add_to_playlist(track, playlist):
+	try:
+		playlist.add_tracks(playlist)
+		return True
+	except(LibError, TypeError):
+		if(TypeError):
+			print "The playlist object is not valid"
+			return False
+		print "Unicode object. Maybe the Track object is corrupted or not valid?"
+		return False
 
-'''Search for song in Spotify search
-'''
-def search_song()
 
-'''Create a new playlist with appropriate title if necessary e.g. When a new 8tracks playlist is liked
-'''
-def create_playlist()
+
