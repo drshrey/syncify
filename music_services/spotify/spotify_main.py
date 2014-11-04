@@ -43,10 +43,9 @@ if(valid == False):
 	playlist = spotify_func.create_playlist(testSyncObj, session)
 	track = spotify_func.get_track(testSyncObj.trackinfo.name, testSyncObj.trackinfo.artist, session)
 	add_valid = spotify_func.add_to_playlist(track, playlist)
-	print add_valid
+	if(add_valid == True):
+		print track, "was added to", playlist, "!"
+	
 
-print "HOOKAY"
-valid = spotify_func.search(testSyncObj, session)
 
-if(valid == False):
-	print "You fucked up somehow"
+

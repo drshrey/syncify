@@ -29,16 +29,13 @@ def login_correctly(user,password):
 #Returns a boolean --> False if doesn't exist; True if does exist 
 def search(syncifyObject, spotifyClient):
 	playlist = ''
-	
-	for i in range(len(spotifyClient.playlist_container)):
-		if(spotifyClient.playlist_container[i].name == syncifyObject.serviceinfo.service_name):
-			playlist = spotifyClient.playlist_container[i].name
-			print "FOUND PLAYLIST"
+	for tmp_list in spotifyClient.playlist_container:
+		if(tmp_list.load().name == syncifyObject.serviceinfo.service_name):
+			playlist = tmp_list
 			break
-	if playlist == '':
-		print "Could not find appropriate music service playlist."
+	if(playlist == ''):
+		print "Could not find appropriate music service playlist"
 		return False
-	#Iterate through appropriate music service playlist
 	try:
 		for track in playlist.tracks:
 			print track.load().name
@@ -46,7 +43,7 @@ def search(syncifyObject, spotifyClient):
 				return True
 		return False
 	except AttributeError:
-		print "Weird unicode object but it seems like we got the right playlist so I'll return True for now"
+		print "Weird unicode object but it seems like we got the right playlist so I'll return True for now. search function."
 		return True
 
 #Create a music service playlist
@@ -55,32 +52,34 @@ def create_playlist(syncifyObject, spotifyClient):
 	try:
 		container = spotifyClient.playlist_container; 
 		playlist_name = syncifyObject.serviceinfo.service_name
-		container.add_new_playlist(playlist_name,0)
+		playlist = container.add_new_playlist(playlist_name)
 		print "New playlist was created: ", playlist_name
-		return container[0]
+		return playlist
 	except spotify.LibError:
-		print "LibError, we couldn't create a new service playlist for you..."
+		print "LibError, we couldn't create a new service playlist. create_playlist."
 		return None
 
 #Returns the appropriate track object of the track name and artist
 def get_track(name, artist, spotifyClient):
-	track = None
-	query = "title:"+name+" artist:'"+artist+"'"
-	results = spotifyClient.search(query).load()
-	track = results.tracks[0]	
-	if track == None:
-		print "Could not get track URI"
-	return track
+	try:
+		track = None
+		query = "title:"+name+" artist:'"+artist+"'"
+		results = spotifyClient.search(query).load()
+		track = results.tracks[0]	
+		if track == None:
+			print "Could not get track URI"
+		return track
+	except spotify.error.Timeout:
+		print "Spotify was not able to search for", track
 
 #Add given track to given playlist name
 def add_to_playlist(track, playlist):
 	try:
-		print track
 		playlist.add_tracks(track)
 		return True
 	except(spotify.LibError, TypeError, AttributeError):
 		if(TypeError):
-			print "The track object is not valid"
+			print "The playlist object is not valid"
 			return False
 		if(AttributeError):
 			print "The track object is null"
