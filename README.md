@@ -31,3 +31,17 @@ Done! Check out your updated playlists at :
 8tracks Finds
 Chill Music
 ```
+
+##To Do:
+
+Spotify Functionality:
+Create playlists that don't exist yet [Check] 
+Add tracks into playlists that are extracted from Syncify objects [Check]
+
+8tracks Functionality:
+Create Syncify objects
+Pass to database
+
+MongoDB Functionality:
+Set up database to save syncify objects and pass them through to spotify
+

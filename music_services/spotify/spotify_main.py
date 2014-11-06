@@ -8,9 +8,12 @@ import syncify_object
 import threading
 
 #LOGIN INFORMATION
+'''
 login_file = open('spotify_login.txt','r')
 user = login_file.readline()
+print user
 password = login_file.readline()
+print password
 if(user == '' or password == ''):
 	print "Enter your login information. Don't worry, you'll only need to do this once"
 	user = raw_input("Enter your username: \n")
@@ -19,10 +22,11 @@ if(user == '' or password == ''):
 	login_file.write(user+'\n')
 	login_file.write(password+'\n')
 
+'''
 #LOGGING IN
-session = spotify_func.login_correctly(user, password)
+session = spotify_func.login_correctly("drshrey", "Idaman2014")
 #ADD/SYNC 
-testSyncObj = syncify_object.Syncify("Neon", "Room for Squares", "John Mayer", "HypeM")
+testSyncObj = syncify_object.Syncify("Gravity", "Continuum", "John Mayer", "HypeM")
 
 new_track = None
 valid_playlist = spotify_func.search_playlist(testSyncObj, session)
