@@ -11,7 +11,9 @@ import threading
 login_file = open('spotify_login.txt','r')
 user = login_file.readline()
 password = login_file.readline()
-#if(user == '' or password == ''):
+if(user == '' or password == ''):
+
+
 print "Enter your login information. Don't worry, you'll only need to do this once"
 user = raw_input("Enter your username: \n")
 password = raw_input("Enter your password : \n")
@@ -20,23 +22,25 @@ login_file.write(user+'\n')
 login_file.write(password+'\n')
 
 #LOGGING IN
-session = spotify_func.login_correctly("drshrey", "Idaman2014")
+session = spotify_func.login_correctly(user, password)
 #ADD/SYNC 
-testSyncObj = syncify_object.Syncify("My Stupid Mouth", "Room for Squares", "John Mayer", "8tracks")
+testSyncObj = syncify_object.Syncify("Neon", "Room for Squares", "John Mayer", "HypeM")
 
 new_track = None
-
 valid_playlist = spotify_func.search_playlist(testSyncObj, session)
 
 #Check if valid_playlist is empty
+#If valid_playlist is None, create new playlist and add track
 if valid_playlist == None:
 	valid_playlist = spotify_func.create_playlist(testSyncObj, session)
 	new_track = spotify_func.get_track(testSyncObj.trackinfo.name, testSyncObj.trackinfo.artist, session)	
-	valid_add = spotify_func.add_to_playlist(new_track, new_playlist)
+	valid_add = spotify_func.add_to_playlist(new_track, valid_playlist)
+
 
 valid_track = spotify_func.search_track(valid_playlist, testSyncObj, session)
 
 #Check if track is found inside valid_playlist
+#If track is inside valid_playlist, ignore and just print done
 if valid_track == False:
 	print "Track is not inside playlist, so adding to it."
 	new_track = spotify_func.get_track(testSyncObj.trackinfo.name, testSyncObj.trackinfo.artist,session)
