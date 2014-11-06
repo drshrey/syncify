@@ -20,32 +20,18 @@ login_file.write(user+'\n')
 login_file.write(password+'\n')
 
 #LOGGING IN
-#session = spotify_func.login_correctly(user, password)
-logged_in_event = threading.Event()
-def connection_state_listener(session):
-	if session.connection.state is spotify.ConnectionState.LOGGED_IN:
-		logged_in_event.set()
-
-session = spotify.Session()
-loop = spotify.EventLoop(session)
-loop.start()
-session.on(
-		spotify.SessionEvent.CONNECTION_STATE_UPDATED,
-		connection_state_listener
-		)
-session.login('drshrey', 'Idaman2014')
-logged_in_event.wait()
+session = spotify_func.login_correctly("drshrey", "Idaman2014")
 #ADD/SYNC 
 testSyncObj = syncify_object.Syncify("Why Georgia", "Room for Squares", "John Mayer", "8tracks")
 
-valid = spotify_func.search(testSyncObj, session)
-if(valid == False):
-	playlist = spotify_func.create_playlist(testSyncObj, session)
-	track = spotify_func.get_track(testSyncObj.trackinfo.name, testSyncObj.trackinfo.artist, session)
-	add_valid = spotify_func.add_to_playlist(track, playlist)
-	if(add_valid == True):
-		print track, "was added to", playlist, "!"
-	
+new_playlist = None
+new_track = None
 
+valid_playlist = spotify_func.search_playlist(testSyncObj, session)
+if valid_playlist == False:
+	new_playlist = spotify_func.create_playlist(testSyncObj, session)
+	new_track = spotify_func.get_track(testSyncObj.trackinfo.name, testSyncobj.trackinfo.artist, session)	
+	valid_add = spotify_func.add_to_playlist(new_track, new_playlist)
 
+valid_track = search_track(valid_playlist, testSyncObj, )
 
