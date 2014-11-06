@@ -24,7 +24,7 @@ if(user == '' or password == ''):
 
 '''
 #LOGGING IN
-session = spotify_func.login_correctly("drshrey", "Idaman2014")
+session = spotify_func.login_correctly(user, password)
 #ADD/SYNC 
 testSyncObj = syncify_object.Syncify("Gravity", "Continuum", "John Mayer", "HypeM")
 
