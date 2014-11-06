@@ -2,10 +2,6 @@ import spotify
 import threading
 #Spotify Library Functions
 
-#Adds a track to the appropriate music service playlist
-#Returns a boolean for validity
-#def adds_to_playlist(syncifyObject, spotifyClient)
-
 #Function that helps login_correctly 
 #Function that properly logins without failure when authentication details are True
 def login_correctly(user,password):
@@ -26,7 +22,6 @@ def login_correctly(user,password):
 	return session
 
 #Search through songs in each playlist of Spotify
-
 #Returns a boolean --> False if track doesn't exist
 #Parameters: playlist, spotifyClient
 def search_track(playlist, syncifyObject, spotifyClient):
@@ -85,5 +80,13 @@ def add_to_playlist(track, playlist):
 		print "Unicode object. Maybe the Track object is corrupted or not valid?"
 		return False
 
+#HTTP API Functions 
+def http_search_track(base, playlist, syncifyObject):
+
+		
+
+def http_add_to_playlist(base, track, playlist)
+def http_create_playlist(base, syncifyObject)
+def http_search_playlist(base)
 
 
