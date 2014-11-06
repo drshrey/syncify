@@ -22,16 +22,24 @@ login_file.write(password+'\n')
 #LOGGING IN
 session = spotify_func.login_correctly("drshrey", "Idaman2014")
 #ADD/SYNC 
-testSyncObj = syncify_object.Syncify("Why Georgia", "Room for Squares", "John Mayer", "8tracks")
+testSyncObj = syncify_object.Syncify("My Stupid Mouth", "Room for Squares", "John Mayer", "8tracks")
 
-new_playlist = None
 new_track = None
 
 valid_playlist = spotify_func.search_playlist(testSyncObj, session)
-if valid_playlist == False:
-	new_playlist = spotify_func.create_playlist(testSyncObj, session)
-	new_track = spotify_func.get_track(testSyncObj.trackinfo.name, testSyncobj.trackinfo.artist, session)	
+
+#Check if valid_playlist is empty
+if valid_playlist == None:
+	valid_playlist = spotify_func.create_playlist(testSyncObj, session)
+	new_track = spotify_func.get_track(testSyncObj.trackinfo.name, testSyncObj.trackinfo.artist, session)	
 	valid_add = spotify_func.add_to_playlist(new_track, new_playlist)
 
-valid_track = search_track(valid_playlist, testSyncObj, )
+valid_track = spotify_func.search_track(valid_playlist, testSyncObj, session)
 
+#Check if track is found inside valid_playlist
+if valid_track == False:
+	print "Track is not inside playlist, so adding to it."
+	new_track = spotify_func.get_track(testSyncObj.trackinfo.name, testSyncObj.trackinfo.artist,session)
+	valid_add = spotify_func.add_to_playlist(new_track, valid_playlist)
+
+print "Done with syncing!"

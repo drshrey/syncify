@@ -31,7 +31,7 @@ def login_correctly(user,password):
 #Parameters: playlist, spotifyClient
 def search_track(playlist, syncifyObject, spotifyClient):
 	for obj in playlist.tracks:
-		if obj.load().name == track:
+		if obj.load().name == syncifyObject.trackinfo.name:
 			return True
 	return False
 
